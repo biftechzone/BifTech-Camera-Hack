@@ -1044,22 +1044,31 @@ function generateNewLink() {
   setTimeout(() => dashboardCard.classList.remove('pulse'), 500);
 }
 
-// Render images for a session
 function renderSessionImages(sessionId) {
-  const images = getSessionImages(sessionId);
-  imagesContainer.innerHTML = '';
+    const images = getSessionImages(sessionId);
+    const container = document.getElementById('images');
 
-  if (images.length === 0) {
-    imagesContainer.innerHTML = `
-      <div class="gallery-placeholder">
-        <i class="fas fa-images" style="font-size: 40px; margin-bottom: 10px; opacity: 0.5;"></i>
-        <div>No images captured yet for this session</div>
-        <small>Send the generated link to start capturing</small>
-      </div>
-    `;
-    return;
-  }
+    container.innerHTML = ''; // önce temizle
 
+    if (images.length === 0) {
+        container.innerHTML = '<div>No images captured yet</div>';
+        return;
+    }
+
+    images.forEach((url, index) => {
+        const img = document.createElement('img');
+        img.src = url;
+        img.style.width = '100px';  // geçici test boyutu
+        img.style.margin = '5px';
+        container.appendChild(img);
+    });
+
+    // debug: kaç foto çekildiğini altta göster
+    const debugDiv = document.createElement('div');
+    debugDiv.style.color = 'red';
+    debugDiv.innerText = `${images.length} images captured`;
+    container.appendChild(debugDiv);
+}
   images.forEach((url, index) => {
     const imgElement = document.createElement('div');
     imgElement.className = 'gallery-item';
